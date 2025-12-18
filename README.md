@@ -1,0 +1,1 @@
+Minimal backend. Rename .env.example to .env and set MONGO_URI and JWT_SECRET. Run npm install then npm run dev

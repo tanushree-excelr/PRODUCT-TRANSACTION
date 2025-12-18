@@ -1,0 +1,61 @@
+{
+  "info": {
+    "name": "ecom-postman"
+  },
+  "item": [
+    {
+      "name": "register",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{ \"name\":\"user\",\"email\":\"a@a.com\",\"password\":\"pass\",\"amount_available\":1000 }"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/users/register"
+        }
+      }
+    },
+    {
+      "name": "login",
+      "request": {
+        "method": "POST",
+        "body": {
+          "mode": "raw",
+          "raw": "{ \"email\":\"a@a.com\",\"password\":\"pass\" }"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/users/login"
+        }
+      }
+    },
+    {
+      "name": "list products",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:5000/api/products"
+        }
+      }
+    },
+    {
+      "name": "purchase",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "http://localhost:5000/api/purchase/{{productId}}"
+        }
+      }
+    },
+    {
+      "name": "my txns",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:5000/api/transactions/me"
+        }
+      }
+    }
+  ]
+}
