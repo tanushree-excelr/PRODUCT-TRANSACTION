@@ -1,21 +1,13 @@
-const express = require('express')
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
-dotenv.config()
-const app = express()
-app.use(require('cors')())
-app.use(express.json())
-const auth = require('./middleware/auth')
-const productRoutes = require('./routes/productRoutes')
-const transactionRoutes = require('./routes/transactionRoutes')
-const userRoutes = require('./routes/userRoutes')
-app.use('/api/products', productRoutes)
-app.use('/api/transactions', transactionRoutes)
-app.use('/api/users', userRoutes)
-const PORT = process.env.PORT || 5000
-mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/ecom').then(()=>{
-  app.listen(PORT, ()=> console.log('server running on', PORT))
-}).catch(e=>{ console.error(e); process.exit(1) })
+const app = require('./app')
 
-const purchaseRoutes = require('./routes/purchaseRoutes')
-app.use('/api/purchase', purchaseRoutes)
+dotenv.config()
+
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
+    app.listen(process.env.PORT, () =>
+      console.log('Server running')
+    )
+  })
+  .catch(err => console.log(err))
