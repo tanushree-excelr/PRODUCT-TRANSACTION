@@ -1,0 +1,9 @@
+{"level":"info","message":{"method":"GET","url":"/api/users"},"timestamp":"2025-12-22T10:54:30.588Z"}
+{"level":"info","message":{"method":"POST","url":"/api/users/register"},"timestamp":"2025-12-22T10:54:31.308Z"}
+{"level":"info","message":{"method":"POST","url":"/api/users/login"},"timestamp":"2025-12-22T10:54:31.489Z"}
+{"level":"info","message":{"method":"POST","url":"/api/users/login"},"timestamp":"2025-12-22T10:54:32.301Z"}
+{"level":"info","message":{"method":"POST","url":"/api/products"},"timestamp":"2025-12-22T10:54:32.417Z"}
+{"level":"info","message":{"method":"POST","url":"/api/purchase/694923689115d6a4d907ff95"},"timestamp":"2025-12-22T10:54:32.430Z"}
+{"level":"info","message":"Product purchased successfully","timestamp":"2025-12-22T10:54:32.475Z"}
+{"level":"info","message":{"method":"POST","url":"/api/users/login"},"timestamp":"2025-12-22T10:54:33.048Z"}
+{"level":"info","message":{"method":"POST","url":"/api/products"},"timestamp":"2025-12-22T10:54:33.251Z"}

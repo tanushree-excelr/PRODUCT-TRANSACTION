@@ -3,7 +3,7 @@ const request = require('supertest')
 const app = require('../app')
 
 let token = ''
-let productId = ''
+let productId =''
 
 beforeAll(async () => {
   const login = await request(app)
