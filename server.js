@@ -8,7 +8,7 @@ dotenv.config()
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     app.listen(process.env.PORT, () => {
-      logger.info('Server started')
+      logger.info('Server started using npm run dev')
     })
   })
   .catch(err => {

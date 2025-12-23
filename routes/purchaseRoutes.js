@@ -1,45 +1,54 @@
 const express = require('express')
-const Product = require('../models/Product')
-const User = require('../models/User')
-const Transaction = require('../models/Transaction')
-const auth = require('../middleware/auth')
-const logger = require('../logger')
-
 const router = express.Router()
 
-router.post('/:id', auth, async (req, res) => {
-  try {
-    const product = await Product.findById(req.params.id)
-    const user = await User.findById(req.userId)
+const User = require('../models/User')
+const Product = require('../models/Product')
+const authMiddleware = require('../middleware/auth')
+const logger = require('../logger')
 
-    if (!product || product.available_qty <= 0) {
-      logger.error('Product not available')
-      return res.status(400).json({ message: 'not available' })
+router.post('/:productId', authMiddleware, async (req, res) => {
+  try {
+    const userId = req.user.id
+    const productId = req.params.productId
+
+    const user = await User.findById(userId)
+    const product = await Product.findById(productId)
+
+    if (!product) {
+      logger.error(`Product not found: ${productId}`)
+      return res.status(404).json({ message: 'Product not found' })
     }
 
-    if (user.amount_available < product.amount) {
-      logger.error('Insufficient balance')
-      return res.status(400).json({ message: 'insufficient balance' })
+    if (product.available_qty <= 0) {
+      logger.error(`Product out of stock: ${product.name}`)
+      return res.status(400).json({ message: 'Product out of stock' })
+    }
+
+    if (user.balance < product.price) {
+      logger.error(
+        `Insufficient balance | User: ${user.email} | Balance: ${user.balance}`
+      )
+      return res.status(400).json({ message: 'Insufficient balance' })
     }
 
     product.available_qty -= 1
-    user.amount_available -= product.amount
-
     await product.save()
+
+    user.balance -= product.price
     await user.save()
 
-    await Transaction.create({
-      productId: product._id,
-      userId: user._id,
-      amount: product.amount,
-      status: 'debit'
-    })
+    logger.info(
+      `Purchase successful | User: ${user.email} | Product: ${product.name} | Price: ${product.price}`
+    )
 
-    logger.info('Product purchased successfully')
-    res.json({ message: 'purchased' })
-  } catch (err) {
-    logger.error(err.message)
-    res.status(500).json({ message: 'server error' })
+    res.status(200).json({
+      message: 'Product purchased successfully',
+      product: product.name,
+      remainingBalance: user.balance
+    })
+  } catch (error) {
+    logger.error(`Purchase failed: ${error.message}`)
+    res.status(500).json({ message: 'Server error' })
   }
 })
 

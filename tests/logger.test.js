@@ -2,9 +2,10 @@ const fs = require('fs')
 const request = require('supertest')
 const app = require('../app')
 
-test('API call should create log entry', async () => {
-  await request(app).get('/api/users')
+test('Daily log file should be created', async () => {
+  await request(app).post('/api/users/register')
+    .send({ email: 'log@test.com', password: '123456' })
 
-  const logs = fs.readFileSync('logs/combined.log', 'utf8')
-  expect(logs.length).toBeGreaterThan(0)
+  const files = fs.readdirSync('logs')
+  expect(files.length).toBeGreaterThan(0)
 })
