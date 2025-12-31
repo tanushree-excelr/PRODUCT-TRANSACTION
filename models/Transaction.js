@@ -1,10 +1,13 @@
 const mongoose = require('mongoose')
 
 const transactionSchema = new mongoose.Schema({
-  productId: mongoose.Schema.Types.ObjectId,
   userId: mongoose.Schema.Types.ObjectId,
+  productId: mongoose.Schema.Types.ObjectId,
   amount: Number,
-  status: String
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
 })
 
 module.exports = mongoose.model('Transaction', transactionSchema)

@@ -1,2 +1,21 @@
 2025-12-23 11:58:26 info: Server started using npm run dev
 2025-12-23 12:00:06 info: Server started using npm run dev
+2025-12-23 12:09:55 info: POST /api/users/register
+2025-12-23 12:09:56 info: POST /api/users/register
+2025-12-23 12:09:56 info: POST /api/users/login
+2025-12-23 12:09:57 info: POST /api/users/login
+2025-12-23 12:09:57 info: POST /api/products
+2025-12-23 12:09:57 info: POST /api/purchase/694a393d7e0b09c753335c44
+2025-12-23 12:09:57 error: Purchase failed: Cannot read properties of undefined (reading 'id')
+2025-12-23 12:09:58 info: POST /api/users/login
+2025-12-23 12:09:58 info: POST /api/products
+2025-12-23 12:12:11 info: POST /api/users/register
+2025-12-23 12:12:11 info: POST /api/users/login
+2025-12-23 12:12:11 info: POST /api/products
+2025-12-23 12:12:11 info: POST /api/purchase/694a39c3392478a8f21cb27a
+2025-12-23 12:12:11 error: Purchase failed: Cannot read properties of undefined (reading 'id')
+2025-12-23 12:12:12 info: POST /api/users/register
+2025-12-23 12:12:12 info: POST /api/users/register
+2025-12-23 12:12:12 info: POST /api/users/login
+2025-12-23 12:12:13 info: POST /api/users/login
+2025-12-23 12:12:13 info: POST /api/products

@@ -1,20 +1,23 @@
 const express = require('express')
 const cors = require('cors')
-const logger = require('./logger')
+const swaggerUi = require('swagger-ui-express')
+const swaggerSpec = require('./swagger')
+
+const userRoutes = require('./routes/userRoutes')
+const productRoutes = require('./routes/productRoutes')
+const purchaseRoutes = require('./routes/purchaseRoutes')
+const transactionRoutes = require('./routes/transactionRoutes')
 
 const app = express()
 
 app.use(cors())
 app.use(express.json())
 
-app.use((req, res, next) => {
-  logger.info(`${req.method} ${req.originalUrl}`)
-  next()
-})
+app.use('/api/users', userRoutes)
+app.use('/api/products', productRoutes)
+app.use('/api/purchase', purchaseRoutes)
+app.use('/api/transactions', transactionRoutes)
 
-app.use('/api/users', require('./routes/userRoutes'))
-app.use('/api/products', require('./routes/productRoutes'))
-app.use('/api/transactions', require('./routes/transactionRoutes'))
-app.use('/api/purchase', require('./routes/purchaseRoutes'))
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 module.exports = app
