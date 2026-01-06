@@ -1,11 +1,15 @@
 const express = require('express')
-const Transaction = require('../models/Transaction')
-const auth = require('../middleware/auth')
-
 const router = express.Router()
+const Transaction = require('../models/Transaction')
 
-router.get('/', auth, async (req, res) => {
-  const txns = await Transaction.find({ userId: req.user._id })
+/**
+ * @swagger
+ * /api/transactions:
+ *   get:
+ *     summary: Get transactions
+ */
+router.get('/', async (req, res) => {
+  const txns = await Transaction.find()
   res.json(txns)
 })
 

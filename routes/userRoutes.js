@@ -1,41 +1,35 @@
 const express = require('express')
-const User = require('../models/User')
-const auth = require('../middleware/auth')
-
 const router = express.Router()
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+const User = require('../models/User')
 
 /**
  * @swagger
- * /api/users:
- *   get:
- *     summary: Get users (admin)
+ * /api/users/register:
+ *   post:
+ *     summary: Register user
  */
-router.get('/', auth, async (req, res) => {
-  const query = req.query.q
-  const filter = query ? { name: new RegExp(`^${query}`, 'i') } : {}
-  const users = await User.find(filter)
-  res.json(users)
+router.post('/register', async (req, res) => {
+  const { name, email, password, role } = req.body
+  const hash = await bcrypt.hash(password, 10)
+  const user = await User.create({ name, email, password: hash, role })
+  res.json(user)
 })
 
-router.delete('/:id', auth, async (req, res) => {
-  const user = await User.findById(req.params.id)
-  if (user.role !== 'guest') {
-    return res.status(400).json({ message: 'Only guest users can be deleted' })
-  }
-  user.isDeleted = true
-  await user.save()
-  res.json({ message: 'User soft deleted' })
-})
-
-router.post('/restore/:id', auth, async (req, res) => {
-  const user = await User.findById(req.params.id)
-  user.isDeleted = false
-  user.comments.push({
-    message: req.body.message,
-    timestamp: Date.now()
-  })
-  await user.save()
-  res.json({ message: 'User restored' })
+/**
+ * @swagger
+ * /api/users/login:
+ *   post:
+ *     summary: Login user
+ */
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body
+  const user = await User.findOne({ email })
+  const match = await bcrypt.compare(password, user.password)
+  if (!match) return res.status(401).json({ message: 'Invalid' })
+  const token = jwt.sign({ id: user._id, role: user.role }, 'secret')
+  res.json({ token })
 })
 
 module.exports = router
