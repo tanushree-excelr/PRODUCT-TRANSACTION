@@ -1,11 +1,12 @@
-const swaggerJSDoc = require('swagger-jsdoc')
+const swaggerJSDoc = require('swagger-jsdoc');
 
 const options = {
   definition: {
     openapi: '3.0.0',
     info: {
       title: 'Product Transaction API',
-      version: '1.0.0'
+      version: '1.0.0',
+      description: 'API documentation for Product Transaction service'
     },
     servers: [
       {
@@ -23,7 +24,9 @@ const options = {
     },
     security: [{ bearerAuth: [] }]
   },
-  apis: ['./routes/*.js']
-}
+  apis: ['./routes/*.js']  
+};
 
-module.exports = swaggerJSDoc(options)
+const swaggerSpec = swaggerJSDoc(options);
+
+module.exports = swaggerSpec;

@@ -1,36 +1,37 @@
 const express = require('express')
 const router = express.Router()
 const Product = require('../models/Product')
-const User = require('../models/User')
 const Transaction = require('../models/Transaction')
+const auth = require('../middleware/auth')
 
 /**
  * @swagger
  * /api/purchase/{productId}:
  *   post:
  *     summary: Purchase product
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: productId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Product purchased
  */
-router.post('/:productId', async (req, res) => {
-  const user = await User.findOne()
+router.post('/:productId', auth, async (req, res) => {
   const product = await Product.findById(req.params.productId)
+  if (!product) return res.status(404).json({ message: 'Product not found' })
 
-  if (product.available_qty <= 0)
-    return res.status(400).json({ message: 'Out of stock' })
-
-  product.available_qty--
-  user.amount_available -= product.amount
-
-  await product.save()
-  await user.save()
-
-  await Transaction.create({
-    userId: user._id,
-    productId: product._id,
-    amount: product.amount,
-    status: 'debit'
+  const transaction = await Transaction.create({
+    user: req.user.id,
+    product: product._id,
+    amount: product.price
   })
 
-  res.json({ message: 'purchased' })
+  res.json(transaction)
 })
 
 module.exports = router
